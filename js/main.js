@@ -53,7 +53,13 @@ function removeFromList( event ) {
 
   targetItem = document.getElementById( event.target.id );
   removeFromLocalStorage( event.target.id );
-  targetItem.parentNode.removeChild( targetItem );
+
+  targetItem.addEventListener("animationend", function(){
+
+    targetItem.parentNode.removeChild( targetItem );
+  });
+
+  targetItem.style.animation = "scaleDown 0.2s ease";
 }
 
 function addToLocalStorage( task ) {
