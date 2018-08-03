@@ -13,10 +13,30 @@ let taskList = [];
     taskList = JSON.parse( localStorage.getItem( "taskList" ) );
 
     for( let task of taskList ) {
+
       appendToList( task );
+
     }
   }
 })();
+
+function getTask(event) {
+
+  if( event.target.id == "button" || event.keyCode == 13 ) {
+
+    const inputField = document.getElementById( "task-input" ),
+          task = inputField.value;
+
+    if( task != "" && task != undefined ) {
+
+      appendToList( task );
+      addToLocalStorage( task );
+
+    }
+
+    inputField.value = "";
+  }
+}
 
 function appendToList( task ) {
 
@@ -24,24 +44,16 @@ function appendToList( task ) {
         newListItem = document.createElement( "li" );
 
   newListItem.innerHTML = task;
-  newListItem.id = `task-${list.children.length + 1}`
-  newListItem.addEventListener("click", function(){ removeFromList(event); });
+  newListItem.id = `task-${list.children.length + 1}`;
+  newListItem.addEventListener( "click", function(){ removeFromList( event ); });
   list.appendChild( newListItem );
 }
 
-function getTask(event) {
+function removeFromList( event ) {
 
-  if(event.target.id == "button" || event.keyCode == 13){
-
-    const inputField = document.getElementById( "task-input" ),
-          task = inputField.value;
-
-    if( task != "" && task != undefined ) {
-      appendToList( task );
-      addToLocalStorage( task );
-    }
-    inputField.value = "";
-  }
+  targetItem = document.getElementById( event.target.id );
+  removeFromLocalStorage( event.target.id );
+  targetItem.parentNode.removeChild( targetItem );
 }
 
 function addToLocalStorage( task ) {
@@ -52,14 +64,7 @@ function addToLocalStorage( task ) {
 
 function removeFromLocalStorage( task ) {
 
-  taskIndex = Number(task.substring(5));
-  taskList.splice(taskIndex - 1, 1);
+  taskIndex = Number( task.substring( 5 ) );
+  taskList.splice( taskIndex - 1, 1 );
   localStorage.setItem( "taskList", JSON.stringify( taskList ) );
-}
-
-function removeFromList(event) {
-
-  targetItem = document.getElementById(event.target.id);
-  removeFromLocalStorage(event.target.id);
-  targetItem.parentNode.removeChild(targetItem);
 }
