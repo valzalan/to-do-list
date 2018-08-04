@@ -20,7 +20,7 @@ let taskList = [];
   }
 })();
 
-function getTask(event) {
+function getInput(event) {
 
   if( event.target.id == "button" || event.keyCode == 13 ) {
 
